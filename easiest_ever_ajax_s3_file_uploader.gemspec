@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = EasiestEverAjaxS3FileUploader::VERSION
   gem.authors       = ["Steven Soroka"]
   gem.email         = ["ssoroka78@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Easiest Ever Ajax S3 File Uploader}
+  gem.summary       = %q{Easiest Ever Ajax S3 File Uploader}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
