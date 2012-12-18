@@ -10,7 +10,7 @@ module EasiestEverAjaxUploads
     end
 
     def get_s3_access_url(filename)
-      if filename =~ /AWSAccessKeyId/i
+      if filename.blank? || filename =~ /AWSAccessKeyId/i
         filename
       else
         filename = URI.unescape(filename).match(/(uploads\/[^\/]+)$/)[0].gsub(/\+/, ' ')
