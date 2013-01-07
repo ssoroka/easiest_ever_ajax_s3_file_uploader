@@ -40,7 +40,11 @@ class EasiestAjaxUploader
         contentType: file.type
         crossDomain: true
         success: (data, textStatus, jqXHR) ->
-          EasiestAjaxUploader.uploadSuccess input, form, jqXHR.getResponseHeader("Location"), input.data("preview_url"), EasiestAjaxUploader.uploadStack
+          location = jqXHR.getResponseHeader("Location")
+          if !location || location == ''
+            console.log("CORS configuration is missing, use: <ExposeHeader>Location</ExposeHeader>")
+          else
+            EasiestAjaxUploader.uploadSuccess input, form, location, input.data("preview_url"), EasiestAjaxUploader.uploadStack
 
         error: (xhro, msg) ->
           console.log "File upload error: " + msg
