@@ -66,6 +66,28 @@ Add an initializer (should this be a before_filter? does it actually connect?) t
       :server => "#{D2S3::S3Config.bucket}.s3.amazonaws.com"
     )
 
+Most importantly, You have to edit the CORS configuration for your Amazon S3 bucket to look something like the following:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+        <CORSRule>
+            <AllowedOrigin>http://example.com</AllowedOrigin>
+            <AllowedOrigin>https://example.com</AllowedOrigin>
+            <AllowedMethod>PUT</AllowedMethod>
+            <AllowedMethod>POST</AllowedMethod>
+            <AllowedMethod>DELETE</AllowedMethod>
+            <ExposeHeader>Location</ExposeHeader>
+            <AllowedHeader>*</AllowedHeader>
+        </CORSRule>
+        <CORSRule>
+            <AllowedOrigin>*</AllowedOrigin>
+            <AllowedMethod>GET</AllowedMethod>
+            <MaxAgeSeconds>3000</MaxAgeSeconds>
+            <AllowedHeader>Authorization</AllowedHeader>
+        </CORSRule>
+    </CORSConfiguration>
+
+Feel free to edit as neccessary, but AllowedOrigin must match your host domain, and the ExposeHeader is required.
 
 ## Usage
 
