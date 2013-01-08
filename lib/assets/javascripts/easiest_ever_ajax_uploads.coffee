@@ -37,8 +37,7 @@ class EasiestAjaxUploader
         type: "POST"
         data: fd
         processData: false
-        # contentType: file.type
-        enctype: 'multipart/form-data'
+        contentType: false
         crossDomain: true
         success: (data, textStatus, jqXHR) ->
           location = jqXHR.getResponseHeader("Location")
