@@ -8,7 +8,7 @@ This project bundles the d2s3 project from here: https://github.com/mwilliams/d2
 
 Add this line to your application's Gemfile:
 
-    gem 'easiest_ever_ajax_s3_file_uploader'
+    gem 'easiest_ever_ajax_s3_file_uploader', git: 'git://github.com/ssoroka/easiest_ever_ajax_s3_file_uploader.git'
 
 And then execute:
 
