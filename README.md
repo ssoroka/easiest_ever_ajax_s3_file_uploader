@@ -9,6 +9,7 @@ This project bundles the d2s3 project from here: https://github.com/mwilliams/d2
 Add this line to your application's Gemfile:
 
     gem 'easiest_ever_ajax_s3_file_uploader', git: 'git://github.com/ssoroka/easiest_ever_ajax_s3_file_uploader.git'
+    gem 'aws-s3' # this gem is for fetching the public-facing url after uploading a private file.
 
 And then execute:
 
@@ -50,15 +51,14 @@ Now all that's left is to define your own custom handlers for what to do when fi
     // fired on completion regardless of success or failure, use for spinners, ui changes, etc.
     EasiestAjaxUploader.uploadDone = function(input, form, uploadsInProgressCount) {}
 
-Add a string field to your model to hold the file's s3 url.
+Add a string field to your model to hold the file's s3 url and add the url handler to the model:
 
     eg: add_column :posts, :image_url, :string
-
-and add the url handler to the model:
-
     easiest_ajax_upload_field :image_url
+    
+If you have more complicated image storage requirements you can write your own handler.
 
-Add an initializer (should this be a before_filter? does it actually connect?) that connects to s3, so the url handler can look up the full url from s3 when the model is saved:
+Add an initializer that connects to s3, so the url handler can look up the full url from s3 when the model is saved:
 
     AWS::S3::Base.establish_connection!(
       :access_key_id => D2S3::S3Config.access_key_id,
@@ -71,8 +71,8 @@ Most importantly, You have to edit the CORS configuration for your Amazon S3 buc
     <?xml version="1.0" encoding="UTF-8"?>
     <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
         <CORSRule>
-            <AllowedOrigin>http://example.com</AllowedOrigin>
-            <AllowedOrigin>https://example.com</AllowedOrigin>
+            <AllowedOrigin>http://changeme.example.com</AllowedOrigin>
+            <AllowedOrigin>https://changeme.example.com</AllowedOrigin>
             <AllowedMethod>PUT</AllowedMethod>
             <AllowedMethod>POST</AllowedMethod>
             <AllowedMethod>DELETE</AllowedMethod>
@@ -91,13 +91,13 @@ Feel free to edit as neccessary, but AllowedOrigin must match your host domain, 
 
 ## Usage
 
-If you want to be able to dynamically insert these file input forms, do something like this:
+If you want to be able to dynamically insert these file input forms, find a way to make the form html available to javascript:
 
     <%= javascript_tag do %>
       window.uploadForm = '<%= s3_upload_form %>';
     <% end %>
 
-to use it in a view:
+or use it in a view:
 
     <%= s3_upload_form %>
 
@@ -106,6 +106,7 @@ If you want more controls over how it renders the form and input, see https://gi
 ## Requirements
 
   JQuery for the ajaxy bits.
+  aws-s3 for converting the private url that s3 returns in to a public-facing url with access controls.
 
 ## Contributing
 
